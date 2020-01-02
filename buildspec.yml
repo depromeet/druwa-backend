@@ -1,0 +1,28 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: openjdk8
+  build:
+    commands:
+      - echo Build Starting on `date`
+      - chmod +x ./gradlew
+      - ./gradlew build -x test
+  post_build:
+    commands:
+      - echo $(basename ./build/libs/*.jar)
+      - pwd
+
+artifacts:
+  name: drawa-$(date +%Y-%m-%d-%H:%m:%S)
+  type: zip
+  files:
+    - appspec.yml
+    - build/libs/*.jar
+    - scripts/**
+  discard-paths: yes
+
+cache:
+  paths:
+    - '/root/.gradle/caches/**/*'
